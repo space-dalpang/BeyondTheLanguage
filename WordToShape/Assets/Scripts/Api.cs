@@ -1,20 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 public class Api : MonoBehaviour
 {
+	public delegate void OnGetWord(JSONObject word);
 
-	void Start ()
-	{
+	public void GetWords(OnGetWord _OnGetWord) {
 		string url = "http://localhost/words";
 		WWW www = new WWW (url);
-		StartCoroutine (WaitForRequest (www));
+		StartCoroutine (WaitForRequest (www, _OnGetWord));
 
 	}
 
-	IEnumerator WaitForRequest (WWW www)
+	IEnumerator WaitForRequest (WWW www, OnGetWord _OnGetWord)
 	{
 
 		yield return www;
@@ -22,19 +21,20 @@ public class Api : MonoBehaviour
 		// check for errors
 
 		if (www.error == null) {
-			HandleJson (www.text);
+			StartCoroutine(HandleJson (www.text, _OnGetWord));
 		} else {
 			Debug.Log ("WWW Error: " + www.error);
 		}
 
 	}
 
-	void HandleJson (string json)
+	IEnumerator HandleJson (string json, OnGetWord _OnGetWord)
 	{
 		JSONObject jo = new JSONObject (json);
 		List<JSONObject> words = jo.GetField ("words").list;
 		foreach (JSONObject word in words) {
-			Debug.Log (Regex.Unescape (word.GetField ("name").str));
+			_OnGetWord (word);
+			yield return new WaitForSeconds(0.2f);
 		}
 	}
 }
