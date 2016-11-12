@@ -45,7 +45,7 @@ def senti():
 @app.route('/words', methods=['get'])
 def get_words():
     words = db.session.query(Word).all()
-    return jsonify({"words": words})
+    return jsonify({"words": [w.get_public() for w in words]})
 
 
 @app.route('/words', methods=['post'])
