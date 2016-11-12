@@ -24,7 +24,7 @@ def senti():
     filtered_words = db.session.query(Word).filter(
         db.literal(Word.pos_to_tag(posed)).contains(Word.tag)
     )
-
+    counted_words = list()
     senti_counter = dict()
 
     for word in filtered_words:
@@ -34,10 +34,12 @@ def senti():
             senti_counter[word.category] += level_count
         else:
             senti_counter[word.category] = level_count
+        for i in range(count):
+            counted_words.append(word)
 
     return jsonify({
         "analyzed": Word.pos_to_tag(posed),
-        "words": [w.get_public() for w in filtered_words],
+        "words": [w.get_public() for w in counted_words],
         "senti": senti_counter
     })
 
