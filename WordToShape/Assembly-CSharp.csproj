@@ -49,6 +49,16 @@
      <Compile Include="Assets\JSON\JSONTemplates.cs" />
      <Compile Include="Assets\JSON\VectorTemplates.cs" />
      <Compile Include="Assets\Scripts\Api.cs" />
+     <Compile Include="Assets\Scripts\MouseCamera.cs" />
+     <Compile Include="Assets\Scripts\RandomShape\Containers.cs" />
+     <Compile Include="Assets\Scripts\RandomShape\Factory.cs" />
+     <Compile Include="Assets\Scripts\RandomShape\Functions.cs" />
+     <Compile Include="Assets\Scripts\RandomShape\Polygon.cs" />
+     <Compile Include="Assets\Scripts\RandomShape\Polygon2D.cs" />
+     <Compile Include="Assets\Scripts\RandomShape\Polygon3D.cs" />
+     <Compile Include="Assets\Scripts\RandomShape\Primitives.cs" />
+     <Compile Include="Assets\Scripts\RandomShape\Triangulator2D.cs" />
+     <Compile Include="Assets\Scripts\RandomShape\Triangulator3D.cs" />
      <Compile Include="Assets\Scripts\Text.cs" />
      <None Include="Assets\JSON\readme.txt" />
  <Reference Include="UnityEngine.UI">

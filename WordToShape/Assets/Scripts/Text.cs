@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
-using System;
 using System.Text.RegularExpressions;
+using BeyondTheLanguage;
+using MeshGen;
+using System;
+
 
 public class Text : MonoBehaviour
 {
@@ -10,6 +14,7 @@ public class Text : MonoBehaviour
 	public float scale;
 	private InputField mainInputField = null;
 	private Api api = null;
+	private MouseCamera mouseCamera;
 
 	void Start ()
 	{
@@ -25,6 +30,15 @@ public class Text : MonoBehaviour
 		input.text = "";
 	}
 
+	Polygon CreateSphericalPolygon(int numVertices = 15, float radius = 1f) {
+		var vertices = new List<Vector3>();
+		var center = new Vector3(0, 0, 0);
+		for (int i = 0; numVertices > i; i++) {
+			vertices.Add(UnityEngine.Random.onUnitSphere * radius + center);
+		}
+		return Factory.Create("RandomShape", vertices);
+	}
+
 	private void OnGetSenti (JSONObject result)
 	{
 		StartCoroutine (GenWordObject (result));
@@ -38,6 +52,11 @@ public class Text : MonoBehaviour
 	private IEnumerator GenWordObject (JSONObject result)
 	{
 		JSONObject words = result.GetField ("words");
+		if (words.list.Count == 0) {
+			Polygon polygon = CreateSphericalPolygon(mainInputField.text.GetHashCode() % 16 + 9, mainInputField.text.Length % 5 + 1).Rigidize();
+			polygon.gameObject.transform.position = new Vector3(0, 8, 0) + UnityEngine.Random.insideUnitSphere;
+		}
+
 		foreach (JSONObject word in words.list) {
 			string name = Regex.Unescape (word.GetField ("name").str);
 			string category = Regex.Unescape (word.GetField ("category").str);
@@ -75,6 +94,7 @@ public class Text : MonoBehaviour
 		}
 		Rigidbody gameObjectsRigidBody = go.AddComponent<Rigidbody> ();
 		gameObjectsRigidBody.mass = 5;
+
 		return go;
 	}
 
