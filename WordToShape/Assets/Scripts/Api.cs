@@ -4,37 +4,27 @@ using System.Collections.Generic;
 
 public class Api : MonoBehaviour
 {
-	public delegate void OnGetWord(JSONObject word);
+	public delegate void OnGetSenti (JSONObject result);
 
-	public void GetWords(OnGetWord _OnGetWord) {
-		string url = "http://localhost/words";
-		WWW www = new WWW (url);
-		StartCoroutine (WaitForRequest (www, _OnGetWord));
+	public delegate void OnErrorSenti (string error);
 
+	public void GetSenti (string query, OnGetSenti cb, OnErrorSenti errorCb)
+	{
+		StartCoroutine (InternalGetSenti (query, cb, errorCb));
 	}
 
-	IEnumerator WaitForRequest (WWW www, OnGetWord _OnGetWord)
+	private IEnumerator InternalGetSenti (string query, OnGetSenti cb, OnErrorSenti errorCb)
 	{
-
+		string url = "http://localhost/senti?q=" + query;
+		WWW www = new WWW (url);
 		yield return www;
-
-		// check for errors
-
 		if (www.error == null) {
-			StartCoroutine(HandleJson (www.text, _OnGetWord));
+			JSONObject jo = new JSONObject (www.text);
+			cb (jo);
 		} else {
+			errorCb (www.error);
 			Debug.Log ("WWW Error: " + www.error);
 		}
 
-	}
-
-	IEnumerator HandleJson (string json, OnGetWord _OnGetWord)
-	{
-		JSONObject jo = new JSONObject (json);
-		List<JSONObject> words = jo.GetField ("words").list;
-		foreach (JSONObject word in words) {
-			_OnGetWord (word);
-			yield return new WaitForSeconds(0.2f);
-		}
 	}
 }
