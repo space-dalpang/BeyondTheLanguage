@@ -12,22 +12,43 @@ public class Text : MonoBehaviour
 {
 	[Range(0F,10F)]
 	public float scale;
-	private InputField mainInputField = null;
+	public InputField mainInputField;
+	private Button runButton = null;
 	private Api api = null;
 	private MouseCamera mouseCamera;
 
 	void Start ()
 	{
-		mainInputField = GetComponent<InputField> ();
+		Debug.Log (mainInputField);
+		runButton = GetComponent<Button> ();
+
 		api = GetComponent<Api> ();
 
-		mainInputField.onEndEdit.AddListener(delegate{ValueChangeCheck(mainInputField);});
+		runButton.onClick.AddListener(delegate{ValueChangeCheck(mainInputField);});
 	}
 
 	public void ValueChangeCheck (InputField input)
 	{
 		api.GetSenti (input.text, OnGetSenti, OnErrorSenti);
 		input.text = "";
+
+
+		GameObject parent = GameObject.Find("InputCanvas");
+		CanvasGroup cg = parent.GetComponent<CanvasGroup> ();
+
+		Button backButton = GameObject.Find ("BackButton").GetComponent<Button> ();
+
+		StartCoroutine(FadeOut(cg));
+	}
+
+	IEnumerator FadeOut(CanvasGroup canvasGroup)
+	{
+		float time = 1f;
+		while(canvasGroup.alpha > 0)
+		{
+			canvasGroup.alpha -= Time.deltaTime / time;
+			yield return null;
+		}
 	}
 
 	Polygon CreateSphericalPolygon(int numVertices = 15, float radius = 1f) {
