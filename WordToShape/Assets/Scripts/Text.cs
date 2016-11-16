@@ -7,7 +7,6 @@ using BeyondTheLanguage;
 using MeshGen;
 using System;
 
-
 public class Text : MonoBehaviour
 {
 	[Range(0F,10F)]
@@ -15,11 +14,9 @@ public class Text : MonoBehaviour
 	public InputField mainInputField;
 	private Button runButton = null;
 	private Api api = null;
-	private MouseCamera mouseCamera;
 
 	void Start ()
 	{
-		Debug.Log (mainInputField);
 		runButton = GetComponent<Button> ();
 
 		api = GetComponent<Api> ();
@@ -32,23 +29,14 @@ public class Text : MonoBehaviour
 		api.GetSenti (input.text, OnGetSenti, OnErrorSenti);
 		input.text = "";
 
+		CanvasGroup inputCanvas = GameObject.Find("InputCanvas").GetComponent<CanvasGroup> ();
+		CanvasGroup layoutCanvas = GameObject.Find ("LayoutCanvas").GetComponent<CanvasGroup> ();
 
-		GameObject parent = GameObject.Find("InputCanvas");
-		CanvasGroup cg = parent.GetComponent<CanvasGroup> ();
+		StartCoroutine(Util.FadeOut(inputCanvas));
+		StartCoroutine(Util.FadeIn(layoutCanvas));
 
-		Button backButton = GameObject.Find ("BackButton").GetComponent<Button> ();
-
-		StartCoroutine(FadeOut(cg));
-	}
-
-	IEnumerator FadeOut(CanvasGroup canvasGroup)
-	{
-		float time = 1f;
-		while(canvasGroup.alpha > 0)
-		{
-			canvasGroup.alpha -= Time.deltaTime / time;
-			yield return null;
-		}
+		GameObject go = GameObject.Find ("Ground");
+		Camera.main.GetComponent<MouseCamera> ().target = go.transform;
 	}
 
 	Polygon CreateSphericalPolygon(int numVertices = 15, float radius = 1f) {
@@ -58,6 +46,7 @@ public class Text : MonoBehaviour
 			vertices.Add(UnityEngine.Random.onUnitSphere * radius + center);
 		}
 		return Factory.Create("RandomShape", vertices);
+
 	}
 
 	private void OnGetSenti (JSONObject result)
