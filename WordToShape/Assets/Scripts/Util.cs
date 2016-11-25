@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 
 
 public static class Util {
@@ -23,4 +25,18 @@ public static class Util {
 			yield return null;
 		}
 	}
+
+	public static Object[] getPreFabs(){
+		return UnityEngine.Resources.LoadAll ("");
+	}
+
+	public static void DestroyGameObjectsWithTag(string tag, float time)
+	{
+		GameObject[] gameObjects = GameObject.FindGameObjectsWithTag(tag);
+		foreach (GameObject target in gameObjects) {
+			GameObject.Destroy(target, time);
+		}
+	}
+
+
 }

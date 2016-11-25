@@ -1,21 +1,20 @@
 fileFormatVersion: 2
-guid: 3f34e7ed4d3ab4fc7a13361ff1a6d5e0
-timeCreated: 1478975156
+guid: 645301d1e06a27c4e8855e3da41b1e48
+timeCreated: 1480052141
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: Camera
-    100004: Camera.target
-    100006: Model
-    400000: //RootNode
-    400002: Camera
-    400004: Camera.target
-    400006: Model
-    2300000: Model
-    3300000: Model
-    4300000: Model
+    100000: group_0
+    100002: //RootNode
+    100004: skp_camera_Last_Saved_SketchUp_View
+    400000: group_0
+    400002: //RootNode
+    400004: skp_camera_Last_Saved_SketchUp_View
+    2300000: group_0
+    3300000: group_0
+    4300000: group_0
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
@@ -40,7 +39,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0.5
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
@@ -59,7 +58,7 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-  importAnimation: 0
+  importAnimation: 1
   copyAvatar: 0
   humanDescription:
     human: []
@@ -74,7 +73,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

@@ -33,8 +33,46 @@ public class RandomShapes : MonoBehaviour {
 	}
 
 	void Create() {
-		var polygon = CreateSphericalPolygon().Rigidize();
-		polygon.gameObject.transform.position = transform.position + new Vector3(0, 8, 0) + Random.insideUnitSphere;
+		Object[] prefabs = Util.getPreFabs ();
+
+		int n = Random.Range (1, prefabs.Length);
+
+		if (n < prefabs.Length-1) {
+			GameObject newObj;	
+			GameObject go = prefabs [n] as GameObject;
+
+			//GameObject newObj = Instantiate (go);
+			newObj = new GameObject ("SentiObject");
+
+			MeshFilter meshFilter = newObj.AddComponent<MeshFilter> ();
+			meshFilter.mesh = go.GetComponentInChildren<MeshFilter> ().sharedMesh;
+
+			Mesh mesh = meshFilter.mesh;
+			mesh.Optimize ();
+			mesh.RecalculateNormals ();
+			mesh.RecalculateBounds ();
+
+			MeshRenderer meshRenderer = newObj.AddComponent<MeshRenderer> ();
+			meshRenderer.material = go.GetComponentInChildren<MeshRenderer> ().sharedMaterial;
+			meshRenderer.material.color = Random.ColorHSV (0f, 1f, 1f, 1f, 0.5f, 1f);
+
+
+			Rigidbody rigid = newObj.AddComponent<Rigidbody> ();
+			rigid.mass = 5;
+			rigid.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+
+			MeshCollider collider = newObj.AddComponent<MeshCollider> ();
+			collider.convex = true;
+			newObj.transform.position = transform.position + new Vector3(0, 8, 0) + Random.insideUnitSphere;
+
+			newObj.transform.rotation = Random.rotation;
+			newObj.tag = "temp";
+		} else {
+			var polygon = CreateSphericalPolygon ().Rigidize ();
+			polygon.gameObject.transform.position = transform.position + new Vector3 (0, 8, 0) + Random.insideUnitSphere;
+			polygon.gameObject.tag = "temp";
+		}
+
 	}
 
 	void Start() {

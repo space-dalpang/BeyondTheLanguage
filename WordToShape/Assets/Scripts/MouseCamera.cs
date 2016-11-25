@@ -48,7 +48,7 @@ namespace BeyondTheLanguage
 			float range = Vector3.Distance (transform.position, target.position);
 
 			if (range >= 10f && (prevTarget != target)) {
-				var speed = 50f;
+				var speed = 100f;
 //				transform.localPosition = Vector3.MoveTowards (transform.localPosition, target.position + new Vector3(0, 0, -10), speed * Time.deltaTime);
 //				transform.rotation = Quaternion.RotateTowards (transform.localRotation, new Quaternion(0, 0, 0, 0), speed * Time.deltaTime);
 
