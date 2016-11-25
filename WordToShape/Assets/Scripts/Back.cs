@@ -17,6 +17,7 @@ public class Back : MonoBehaviour {
 	void goBack() 
 	{
 		Util.DestroyGameObjectsWithTag ("temp", 1f);
+		RandomShapes.go = true;
 
 		CanvasGroup inputCanvas = GameObject.Find("InputCanvas").GetComponent<CanvasGroup> ();
 		CanvasGroup layoutCanvas = GameObject.Find ("LayoutCanvas").GetComponent<CanvasGroup> ();

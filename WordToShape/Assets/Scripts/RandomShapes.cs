@@ -6,7 +6,7 @@ using MeshGen;
 public class RandomShapes : MonoBehaviour {
 
 	public float interval = 0.5f;
-
+	public static bool go = true;
 	float timer = 0f;
 
 	Polygon CreateFlatPyramid() {
@@ -83,7 +83,8 @@ public class RandomShapes : MonoBehaviour {
 		timer += Time.deltaTime;
 		if (timer > interval) {
 			timer = 0f;
-			Create();
+			if(go)
+				Create();
 		}
 	}
 

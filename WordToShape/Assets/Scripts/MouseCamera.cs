@@ -64,7 +64,6 @@ namespace BeyondTheLanguage
 				var targetRotation = Quaternion.LookRotation (target.transform.position - transform.position);
 				transform.rotation = Quaternion.Slerp (transform.rotation, targetRotation, 3 * Time.deltaTime);
 //				transform.LookAt (target);
-
 			} else {
 				prevTarget = target;
 			}

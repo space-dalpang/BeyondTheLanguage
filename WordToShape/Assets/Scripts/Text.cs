@@ -62,9 +62,46 @@ public class Text : MonoBehaviour
 		// todo
 	}
 
+//	private float LerpTime = 1.0f;
+//	private bool LerpedUp = false;
+
+	void Update(){
+		GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("temp");
+
+//		foreach (GameObject target in gameObjects) {
+//			if (!LerpedUp) {
+//				LerpTime = 0.0f;
+//				LerpedUp = true;
+//			} else if(LerpTime < 1.0f){
+//				target.transform.localScale = Vector3.Lerp (Vector3.zero, Vector3.one, LerpTime);
+//				LerpTime += Time.deltaTime * 0.5f;
+//			}
+//		}
+	}
+
+	private IEnumerator scaleAnimation(GameObject go, Vector3 targetScale){
+//		float duration = 1.0f;
+//		for(float t = 0.0f; t < duration; t += Time.deltaTime){
+//			Debug.Log ("aa");
+//			go.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t/duration);
+//			yield return null;
+//		}
+
+		float elapsedTime = 0.0f;
+		while (elapsedTime < 1.0f)
+		{
+			go.transform.localScale = Vector3.Lerp(Vector3.zero, targetScale, elapsedTime / 1.0f);
+			elapsedTime += Time.deltaTime;
+			yield return null;
+		}
+	}
+
 	private IEnumerator GenWordObject (JSONObject result)
 	{
 		Util.DestroyGameObjectsWithTag ("temp", 1f);
+		RandomShapes.go = false;
+//		LerpedUp = false;
+//		LerpTime = 0.0f;
 
 		JSONObject words = result.GetField ("words");
 		if (words.list.Count == 0) {
@@ -80,6 +117,12 @@ public class Text : MonoBehaviour
 			Debug.Log ("word: " + name + " " + category + " " + level);
 			GameObject go = GenSentiObject (name, category, level);
 			RandomTransformGameObject (go, level, name.GetHashCode ());
+
+			Vector3 targetScale = new Vector3();
+			targetScale = go.transform.localScale;
+			go.transform.localScale = Vector3.zero;
+			StartCoroutine (scaleAnimation (go, targetScale));
+
 			yield return new WaitForSeconds (0.5f);
 		}
 	}
@@ -137,8 +180,6 @@ public class Text : MonoBehaviour
 
 		MeshRenderer meshRenderer = newObj.AddComponent<MeshRenderer> ();
 		meshRenderer.material = go.GetComponentInChildren<MeshRenderer> ().sharedMaterial;
-		meshRenderer.material.color = Random.ColorHSV (0f, 1f, 1f, 1f, 0.5f, 1f);
-
 
 //		Rigidbody rigid = newObj.AddComponent<Rigidbody> ();
 //		rigid.mass = 5;
@@ -147,13 +188,9 @@ public class Text : MonoBehaviour
 		MeshCollider collider = newObj.AddComponent<MeshCollider> ();
 		collider.convex = true;
 
-		newObj.transform.position = transform.position + new Vector3(0, 8, 0) + Random.insideUnitSphere;
-		newObj.transform.rotation = Random.rotation;
-
 		newObj.tag = "temp";
 
-		Destroy (go);
-
+		// Destroy (go);
 		return newObj;
 	}
 
@@ -162,17 +199,15 @@ public class Text : MonoBehaviour
 		System.Random random = new System.Random (seed);
 
 		go.transform.position = new Vector3 (random.Next (4) - 2, random.Next (3) + 5, random.Next (4) - 2);
-		go.transform.Rotate (new Vector3 (random.Next (90), 0, random.Next (90)));
+//		newObj.transform.position = new Vector3(0, 8, 0) + Random.insideUnitSphere;
+		go.transform.rotation = Random.rotation;
+
 		go.transform.localScale = new Vector3 (
 			(random.Next (10) / 10F + level) * scale + 1,
 			(random.Next (10) / 10F + level) * scale + 1,
 			(random.Next (10) / 10F + level) * scale + 1
 		);
-		go.GetComponent<Renderer> ().material.color = new Color32 (
-			(byte)random.Next (255), 
-			(byte)random.Next (255), 
-			(byte)random.Next (255),
-			(byte)255
-		);
+
+		go.GetComponent<Renderer> ().material.color = Random.ColorHSV (0f, 1f, 1f, 1f, 0.5f, 1f);
 	}
 }
