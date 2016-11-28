@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
 using BeyondTheLanguage;
@@ -24,8 +25,9 @@ public class Text : MonoBehaviour
 
 		runButton.onClick.AddListener(delegate{ValueChangeCheck(mainInputField);});
 
-		Polygon polygon = CreateSphericalPolygon(mainInputField.text.GetHashCode() % 16 + 9, mainInputField.text.Length % 5 + 1);
-		polygon.gameObject.transform.position = new Vector3(0, 2.4f, -200);
+		Polygon introPolygon = CreateSphericalPolygon(mainInputField.text.GetHashCode() % 16 + 9, mainInputField.text.Length % 5 + 1);
+		introPolygon.gameObject.transform.position = new Vector3(0, 2.4f, -200);
+		introPolygon.gameObject.tag = "introPolygon";
 
 		samples = GameObject.FindGameObjectsWithTag ("sample");
 
@@ -40,6 +42,8 @@ public class Text : MonoBehaviour
 	public void ValueChangeCheck (InputField input)
 	{
 		api.GetSenti (input.text, OnGetSenti, OnErrorSenti);
+
+		GameObject.FindGameObjectWithTag ("introPolygon").GetComponent<Renderer>().enabled = false;
 
 		CanvasGroup inputCanvas = GameObject.Find("InputCanvas").GetComponent<CanvasGroup> ();
 		CanvasGroup resultCanvas = GameObject.Find ("ResultCanvas").GetComponent<CanvasGroup> ();
@@ -59,7 +63,20 @@ public class Text : MonoBehaviour
 		Camera.main.GetComponent<MouseCamera> ().target = target;
 
 		UnityEngine.UI.Text txt = GameObject.Find ("ResultText").GetComponent<UnityEngine.UI.Text>();
-		txt.text = input.text;
+
+		StringBuilder sb = new StringBuilder();
+		int len = 0;
+		for (int i = 0; i < input.text.Length; i++)
+		{
+			sb.Append(input.text[i]);
+			if (len > 8 && input.text [i] == ' ') {
+				sb.Append ('\n');
+				len = 0;
+			}
+			len++;
+		}
+		string formatted = sb.ToString();
+		txt.text = formatted;
 
 		input.text = "";
 	}
@@ -111,10 +128,10 @@ public class Text : MonoBehaviour
 			long unmatchedCount = result.GetField ("senti").GetField ("unmatched").i;
 			string analyzed = Regex.Unescape (result.GetField ("analyzed").str);
 			while (unmatchedCount > 0) {
-				unmatchedCount--;
-				int level = 1;
+				unmatchedCount -= 12;
+				int level = Random.Range (1, 3);
 				string name = analyzed + unmatchedCount;
-				GameObject go = CreateSphericalPolygon (name.GetHashCode () % 16 + 9, name.Length % 5 + 1).gameObject;
+				GameObject go = CreateSphericalPolygon (name.GetHashCode () % 16 + 9, name.Length % 2 + 1).gameObject;
 				RandomTransformGameObject (go, level, name.GetHashCode ());
 
 				Vector3 targetScale = new Vector3 ();

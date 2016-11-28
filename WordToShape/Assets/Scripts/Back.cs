@@ -21,6 +21,7 @@ public class Back : MonoBehaviour {
 
 		CanvasGroup inputCanvas = GameObject.Find("InputCanvas").GetComponent<CanvasGroup> ();
 		CanvasGroup resultCanvas = GameObject.Find ("ResultCanvas").GetComponent<CanvasGroup> ();
+		GameObject.FindGameObjectWithTag ("introPolygon").GetComponent<Renderer>().enabled = true;
 
 		StartCoroutine(Util.FadeIn(inputCanvas));
 		StartCoroutine(Util.FadeOut(resultCanvas));
