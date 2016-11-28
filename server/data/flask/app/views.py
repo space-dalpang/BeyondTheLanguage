@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from . import app, nlp, db
-from .models import Word, Post
+from .models import Word
 import jpype
 
 
@@ -19,16 +19,16 @@ def senti():
 
     query = request.args.get('q')
     posed = nlp.pos(query, norm=True, stem=True)
-    taged = Word.pos_to_tag(posed)
+    tagged = Word.pos_to_tag(posed)
 
     filtered_words = db.session.query(Word).filter(
-        db.literal(Word.pos_to_tag(posed)).contains(Word.tag)
+        db.literal(tagged).contains(Word.tag)
     )
     counted_words = list()
     senti_counter = dict()
 
     for word in filtered_words:
-        count = taged.count(word.tag)
+        count = tagged.count(word.tag)
         level_count = word.level * count
         if word.category in senti_counter:
             senti_counter[word.category] += level_count
@@ -36,6 +36,7 @@ def senti():
             senti_counter[word.category] = level_count
         for i in range(count):
             counted_words.append(word)
+    senti_counter['unmatched'] = len(posed) - len(counted_words)
 
     return jsonify({
         "analyzed": Word.pos_to_tag(posed),
