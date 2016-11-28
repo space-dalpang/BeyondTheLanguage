@@ -17,7 +17,7 @@ namespace MeshGen {
 			
 			var renderer = gameObject.AddComponent<MeshRenderer>();
 			renderer.material = new Material(Shader.Find("Diffuse"));
-			renderer.castShadows = true;
+			renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
 			renderer.receiveShadows = true;
 			
 			var collider = gameObject.AddComponent<MeshCollider>();

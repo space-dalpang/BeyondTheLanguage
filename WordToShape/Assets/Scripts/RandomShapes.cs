@@ -63,8 +63,16 @@ public class RandomShapes : MonoBehaviour {
 
 			MeshCollider collider = newObj.AddComponent<MeshCollider> ();
 			collider.convex = true;
-			newObj.transform.position = transform.position + new Vector3(0, 8, 0) + Random.insideUnitSphere;
 
+			System.Random random = new System.Random (Time.deltaTime.GetHashCode());
+
+			go.transform.localScale = new Vector3 (
+				(random.Next (10) / 10F) * 0.1f,
+				(random.Next (10) / 10F) * 0.1f,
+				(random.Next (10) / 10F) * 0.1f
+			);
+
+			newObj.transform.position = transform.position + new Vector3(0, 8, 0) + Random.insideUnitSphere;
 			newObj.transform.rotation = Random.rotation;
 			newObj.tag = "temp";
 		} else {

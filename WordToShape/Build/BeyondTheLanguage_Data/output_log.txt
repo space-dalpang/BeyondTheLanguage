@@ -16,45 +16,13 @@ Platform assembly: C:\Users\baesw\Documents\BeyondTheLanguage\WordToShape\Build\
 Loading C:\Users\baesw\Documents\BeyondTheLanguage\WordToShape\Build\BeyondTheLanguage_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: C:\Users\baesw\Documents\BeyondTheLanguage\WordToShape\Build\BeyondTheLanguage_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
 Loading C:\Users\baesw\Documents\BeyondTheLanguage\WordToShape\Build\BeyondTheLanguage_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-- Completed reload, in  0.141 seconds
+- Completed reload, in  0.922 seconds
 Platform assembly: C:\Users\baesw\Documents\BeyondTheLanguage\WordToShape\Build\BeyondTheLanguage_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\baesw\Documents\BeyondTheLanguage\WordToShape\Build\BeyondTheLanguage_Data\Managed\System.dll (this message is harmless)
 desktop: 1680x1050 60Hz; virtual: 3360x1050 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 5.193143 ms
+UnloadTime: 4.899103 ms
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: 257fc -> priority: 1 
-word: 기묘하다 놀람 2
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
-
-word: 분노하다 분노 3
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
-
-word: 복받치다 슬픔 2
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
-
-word: 노여움 분노 3
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
-
-word: 무기력 슬픔 1
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
-
-word: 태연한 중성 1
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
-
-word: 개새끼 분노 2
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
-
-word: 사랑 기쁨 2
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
-
+  Thread -> id: 8846c -> priority: 1 
