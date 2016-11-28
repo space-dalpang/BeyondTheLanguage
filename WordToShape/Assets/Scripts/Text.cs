@@ -259,9 +259,9 @@ public class Text : MonoBehaviour
 		go.transform.rotation = Random.rotation;
 
 		go.transform.localScale = new Vector3 (
-			(random.Next (10) / 10F + level/3) * scale,
-			(random.Next (10) / 10F + level/3) * scale,
-			(random.Next (10) / 10F + level/3) * scale
+			(random.Next (7) / 10F + level/6 + 0.3F) * scale,
+			(random.Next (7) / 10F + level/6 + 0.3F) * scale,
+			(random.Next (7) / 10F + level/6 + 0.3F) * scale
 		);
 
 		//go.GetComponent<Renderer> ().material.color = Random.ColorHSV (0f, 1f, 1f, 1f, 0.5f, 1f);

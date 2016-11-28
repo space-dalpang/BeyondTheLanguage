@@ -15,8 +15,8 @@ public class Api : MonoBehaviour
 
 	private IEnumerator InternalGetSenti (string query, OnGetSenti cb, OnErrorSenti errorCb)
 	{
-		string host = "192.168.99.100";
-//		string host = "localhost";
+//		string host = "192.168.99.100";
+		string host = "localhost";
 		string url = "http://" + host + "/senti?q=" + WWW.EscapeURL(query);
 
 		int retryCount = 0;
@@ -28,7 +28,6 @@ public class Api : MonoBehaviour
 			float timeOut = 1;
 
 			while (!www.isDone) {
-				Debug.Log (timer);
 				if (timer > timeOut) {
 					failed = true;
 					break;
@@ -38,6 +37,7 @@ public class Api : MonoBehaviour
 			}
 			if (failed) {
 				www.Dispose ();
+				Debug.Log ("timeout: " + retryCount);
 				retryCount++;
 				continue;
 			}
