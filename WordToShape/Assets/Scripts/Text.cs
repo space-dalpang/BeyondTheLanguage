@@ -99,6 +99,8 @@ public class Text : MonoBehaviour
 	private void OnErrorSenti (string error)
 	{
 		// todo
+		UnityEngine.UI.Text txt = GameObject.Find ("ResultText").GetComponent<UnityEngine.UI.Text>();
+		txt.text = error;
 	}
 
 	void Update(){

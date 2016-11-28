@@ -15,7 +15,7 @@ public class Api : MonoBehaviour
 
 	private IEnumerator InternalGetSenti (string query, OnGetSenti cb, OnErrorSenti errorCb)
 	{
-		string host = "192.168.99.100";
+		string host = "192.168.99.100:8080";
 //		string host = "localhost";
 		string url = "http://" + host + "/senti?q=" + WWW.EscapeURL(query);
 		WWW www = new WWW (url);
@@ -24,7 +24,7 @@ public class Api : MonoBehaviour
 			JSONObject jo = new JSONObject (www.text);
 			cb (jo);
 		} else {
-			errorCb (www.error);
+			errorCb (url + ": " + www.error);
 			Debug.Log ("WWW Error: " + www.error);
 		}
 
