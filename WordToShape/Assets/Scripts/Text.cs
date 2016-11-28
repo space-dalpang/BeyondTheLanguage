@@ -104,9 +104,26 @@ public class Text : MonoBehaviour
 
 		JSONObject words = result.GetField ("words");
 		if (words.list.Count == 0) {
-			Polygon polygon = CreateSphericalPolygon(mainInputField.text.GetHashCode() % 16 + 9, mainInputField.text.Length % 5 + 1);
-			polygon.gameObject.transform.position = new Vector3(0, 8, 0) + UnityEngine.Random.insideUnitSphere;
+			Polygon polygon = CreateSphericalPolygon (mainInputField.text.GetHashCode () % 16 + 9, mainInputField.text.Length % 5 + 1);
+			polygon.gameObject.transform.position = new Vector3 (0, 8, 0) + UnityEngine.Random.insideUnitSphere;
 			polygon.gameObject.tag = "temp";
+		} else {
+			long unmatchedCount = result.GetField ("senti").GetField ("unmatched").i;
+			string analyzed = Regex.Unescape (result.GetField ("analyzed").str);
+			while (unmatchedCount > 0) {
+				unmatchedCount--;
+				int level = 1;
+				string name = analyzed + unmatchedCount;
+				GameObject go = CreateSphericalPolygon (name.GetHashCode () % 16 + 9, name.Length % 5 + 1).gameObject;
+				RandomTransformGameObject (go, level, name.GetHashCode ());
+
+				Vector3 targetScale = new Vector3 ();
+				targetScale = go.transform.localScale;
+				go.transform.localScale = Vector3.zero;
+				StartCoroutine (scaleAnimation (go, Vector3.zero, targetScale));
+
+				yield return new WaitForSeconds (0.2f);
+			}
 		}
 
 		foreach (JSONObject word in words.list) {
@@ -178,7 +195,7 @@ public class Text : MonoBehaviour
 			Polygon polygon = CreateSphericalPolygon (name.GetHashCode () % 16 + 9, name.Length % 5 + 1).Rigidize ();
 			go = polygon.gameObject;
 			go.tag = "temp";
-			targetMaterial = go.GetComponent<Material> ();
+			targetMaterial = go.GetComponent<MeshRenderer> ().material;
 			targetMaterial.color = Random.ColorHSV (0f, 1f, 1f, 1f, 0.5f, 1f);
 			break;
 		}
