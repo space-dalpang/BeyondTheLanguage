@@ -134,6 +134,8 @@ public class Text : MonoBehaviour
 				int level = Random.Range (1, 3);
 				string name = analyzed + unmatchedCount;
 				GameObject go = CreateSphericalPolygon (name.GetHashCode () % 16 + 9, name.Length % 2 + 1).gameObject;
+				go.tag = "temp";
+				go.GetComponent<MeshRenderer> ().material.color = Random.ColorHSV (0f, 1f, 1f, 1f, 0.5f, 1f);
 				RandomTransformGameObject (go, level, name.GetHashCode ());
 
 				Vector3 targetScale = new Vector3 ();
@@ -221,7 +223,6 @@ public class Text : MonoBehaviour
 
 		GameObject newObj;
 
-		//GameObject newObj = Instantiate (go);
 		newObj = new GameObject ("SentiObject");
 
 		MeshFilter meshFilter = newObj.AddComponent<MeshFilter> ();
@@ -234,8 +235,6 @@ public class Text : MonoBehaviour
 
 		MeshRenderer meshRenderer = newObj.AddComponent<MeshRenderer> ();
 		meshRenderer.material = targetMaterial;
-		//meshRenderer.material = go.GetComponentInChildren<MeshRenderer> ().sharedMaterial;
-		//meshRenderer.material.color = color;
 
 //		Rigidbody rigid = newObj.AddComponent<Rigidbody> ();
 //		rigid.mass = 5;
