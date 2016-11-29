@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
 using BeyondTheLanguage;
 using MeshGen;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 public class Text : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class Text : MonoBehaviour
 	private Api api = null;
 	private GameObject[] samples;
 	static public List<Vector3> samplesSize = new List<Vector3>();
+	private List<GameObject> galleryObjects = new List<GameObject>();
 
 	void Start ()
 	{
@@ -37,6 +39,8 @@ public class Text : MonoBehaviour
 
 		mainInputField.Select ();
 		mainInputField.ActivateInputField ();
+
+		LoadSaves ();
 	}
 
 	public void ValueChangeCheck (InputField input)
@@ -55,6 +59,10 @@ public class Text : MonoBehaviour
 			StartCoroutine (scaleAnimation (sample, sample.transform.localScale, Vector3.zero));
 		}
 
+		foreach (GameObject galleryObject in galleryObjects){
+			StartCoroutine (scaleAnimation (galleryObject, galleryObject.transform.localScale, Vector3.zero));
+		}
+
 		GameObject go = GameObject.Find ("Ground");
 
 		Transform target = new GameObject ("genDummy").transform;
@@ -64,19 +72,9 @@ public class Text : MonoBehaviour
 
 		UnityEngine.UI.Text txt = GameObject.Find ("ResultText").GetComponent<UnityEngine.UI.Text>();
 
-		StringBuilder sb = new StringBuilder();
-		int len = 0;
-		for (int i = 0; i < input.text.Length; i++)
-		{
-			sb.Append(input.text[i]);
-			if (len > 8 && input.text [i] == ' ') {
-				sb.Append ('\n');
-				len = 0;
-			}
-			len++;
-		}
-		string formatted = sb.ToString();
-		txt.text = formatted;
+		txt.text = Util.FormatString(input.text);
+
+		Save (input.text, GameObject.FindGameObjectsWithTag ("temp"));
 
 		input.text = "";
 	}
@@ -153,6 +151,7 @@ public class Text : MonoBehaviour
 			int level = (int)word.GetField ("level").n;
 			//Debug.Log ("word: " + name + " " + category + " " + level);
 			GameObject go = GenSentiObject (name, category, level);
+			go.tag = "temp";
 			RandomTransformGameObject (go, level, name.GetHashCode ());
 
 			Vector3 targetScale = new Vector3();
@@ -162,6 +161,8 @@ public class Text : MonoBehaviour
 
 			yield return new WaitForSeconds (0.5f);
 		}
+
+		GenGalleryObject (result);
 	}
 
 
@@ -243,8 +244,6 @@ public class Text : MonoBehaviour
 		MeshCollider collider = newObj.AddComponent<MeshCollider> ();
 		collider.convex = true;
 
-		newObj.tag = "temp";
-
 		// Destroy (go);
 		return newObj;
 	}
@@ -265,4 +264,137 @@ public class Text : MonoBehaviour
 
 		//go.GetComponent<Renderer> ().material.color = Random.ColorHSV (0f, 1f, 1f, 1f, 0.5f, 1f);
 	}
+
+	private void Save(string text, GameObject[] objects){
+		BinaryFormatter bf = new BinaryFormatter ();
+		FileStream file = File.Open (Application.persistentDataPath + "/" + System.DateTime.Now.ToString("yyMMddhhmmss") + ".dat", FileMode.Create);
+
+		SentiData data = new SentiData ();
+
+		data.text = text;
+//		data.scales = new Vector3[objects.Length];
+//		data.positions = new Vector3[objects.Length];
+//		data.rotations = new Quaternion[objects.Length];
+//
+//		for (int i=0; i < objects.Length; i++) {
+//			data.scales[i] = objects [i].transform.localScale;
+//			data.positions [i] = objects [i].transform.position;
+//			data.rotations [i] = objects [i].transform.localRotation;
+//		}
+
+		bf.Serialize (file, data);
+		file.Close ();
+	}
+
+	private SentiData Load(string filename){
+		if (File.Exists (Application.persistentDataPath + "/" + filename)) {
+			BinaryFormatter bf = new BinaryFormatter ();
+			FileStream file = File.Open (Application.persistentDataPath + "/" + filename, FileMode.Open);
+			SentiData data = (SentiData)bf.Deserialize (file);
+			file.Close ();
+
+			return data;
+		}
+		return null;
+	}
+
+	private void LoadSaves(){
+		DirectoryInfo info = new DirectoryInfo(Application.persistentDataPath);
+		FileInfo[] fileInfo = info.GetFiles("*.dat");
+
+		foreach (FileInfo file in fileInfo) {
+			SentiData data = Load (file.Name);
+			api.GetSenti (data.text, GenGalleryObject, OnErrorSenti);
+		}
+	}
+
+	public void reloadGallery(){
+		foreach (GameObject gallery in galleryObjects) {
+			Destroy (gallery);
+		}
+		galleryObjects.Clear ();
+
+		LoadSaves ();
+
+		foreach (GameObject gallery in galleryObjects) {
+			gallery.transform.localScale = new Vector3 (0, 0, 0);
+		}
+
+		GameObject content = GameObject.Find ("Content");
+		content.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 2600);
+	}
+
+
+	private void GenGalleryObject (JSONObject result)
+	{
+		JSONObject words = result.GetField ("words");
+		GameObject galleryObject = new GameObject ("GalleryObject");
+		GameObject content = GameObject.Find ("Content");
+		galleryObject.transform.parent = content.transform;
+
+		if (words.list.Count == 0) {
+			Polygon polygon = CreateSphericalPolygon (mainInputField.text.GetHashCode () % 16 + 9, mainInputField.text.Length % 5 + 1);
+			RandomTransformGameObject (polygon.gameObject, Random.Range (1, 3), result.GetField ("text").str.GetHashCode());
+			polygon.gameObject.transform.position -= new Vector3 (0, 8, 0);
+			polygon.gameObject.transform.SetParent(galleryObject.transform);
+		} else {
+			long unmatchedCount = result.GetField ("senti").GetField ("unmatched").i;
+			string analyzed = Regex.Unescape (result.GetField ("analyzed").str);
+			while (unmatchedCount > 0) {
+				unmatchedCount -= 12;
+				int level = Random.Range (1, 3);
+				string name = analyzed + unmatchedCount;
+				GameObject go = CreateSphericalPolygon (name.GetHashCode () % 16 + 9, name.Length % 2 + 1).gameObject;
+				go.GetComponent<MeshRenderer> ().material.color = Random.ColorHSV (0f, 1f, 1f, 1f, 0.5f, 1f);
+				RandomTransformGameObject (go, level, name.GetHashCode ());
+				go.transform.position -= new Vector3 (0, 8, 0);
+				go.transform.SetParent(galleryObject.transform);
+			}
+		}
+
+		foreach (JSONObject word in words.list) {
+			string name = Regex.Unescape (word.GetField ("name").str);
+			string category = Regex.Unescape (word.GetField ("category").str);
+			int level = (int)word.GetField ("level").n;
+			GameObject go = GenSentiObject (name, category, level);
+			RandomTransformGameObject (go, level, name.GetHashCode ());
+			go.transform.position -= new Vector3 (0, 8, 0);
+			go.transform.SetParent(galleryObject.transform);
+		}
+
+		GameObject textObject = Instantiate(GameObject.Find ("ResultText"));
+		UnityEngine.UI.Text text = textObject.GetComponent<UnityEngine.UI.Text> ();
+		text.text = Util.FormatString(result.GetField ("text").str);
+		text.fontSize = 20;
+		textObject.transform.localPosition = new Vector3 (0, 0, 0);
+		textObject.transform.localScale = new Vector3 (0.01f, 0.01f, 0.01f);
+		textObject.transform.SetParent(galleryObject.transform);
+
+		Util.ChangeLayerRecursively (galleryObject.transform, "UI");
+		galleryObject.transform.localScale = new Vector3 (50f, 50f, 50f);
+
+		int gridX = galleryObjects.Count % 2;
+		int gridY = Mathf.FloorToInt(galleryObjects.Count / 2f);
+
+		galleryObject.transform.localPosition = new Vector3 (gridX * 250 + 400, gridY * -250 - 465, 0);
+
+		BoxCollider2D collider = galleryObject.AddComponent<BoxCollider2D> ();
+		collider.size = new Vector2 (4, 4);
+		galleryObject.AddComponent<GalleryHit> ();
+
+		galleryObject.tag = "gallery";
+
+		galleryObjects.Add (galleryObject);
+
+		if(gridX == 0)
+			content.GetComponent<RectTransform>().sizeDelta += new Vector2(0, 250);
+	}
+}
+
+[System.Serializable]	
+class SentiData{
+	public string text;
+//	public Vector3[] scales;
+//	public Vector3[] positions;
+//	public Quaternion[] rotations;
 }

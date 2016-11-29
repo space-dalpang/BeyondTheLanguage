@@ -33,6 +33,14 @@ public class Back : MonoBehaviour {
 			StartCoroutine(scaleAnimation(sample, sample.transform.localScale, Text.samplesSize[k++]));
 		}
 
+		//GameObject.Find ("SubmitButton").GetComponent<Text> ().reloadGallery ();
+
+		GameObject[] gallerys = GameObject.FindGameObjectsWithTag ("gallery");
+
+		foreach (GameObject gallery in gallerys) {
+			StartCoroutine(scaleAnimation(gallery, gallery.transform.localScale, new Vector3(50f, 50f, 50f)));
+		}
+
 		GameObject go = GameObject.Find ("InputDummy");
 		Camera.main.GetComponent<MouseCamera> ().target = go.transform;
 

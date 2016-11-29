@@ -50,6 +50,7 @@
      <Compile Include="Assets\JSON\VectorTemplates.cs" />
      <Compile Include="Assets\Scripts\Api.cs" />
      <Compile Include="Assets\Scripts\Back.cs" />
+     <Compile Include="Assets\Scripts\GalleryHit.cs" />
      <Compile Include="Assets\Scripts\MouseCamera.cs" />
      <Compile Include="Assets\Scripts\RandomShape\Containers.cs" />
      <Compile Include="Assets\Scripts\RandomShape\Factory.cs" />

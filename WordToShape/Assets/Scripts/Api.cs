@@ -46,6 +46,7 @@ public class Api : MonoBehaviour
 
 			if (www.error == null) {
 				JSONObject jo = new JSONObject (www.text);
+				jo.AddField ("text", query);
 				cb (jo);
 			} else {
 				errorCb (url + ": " + www.error);

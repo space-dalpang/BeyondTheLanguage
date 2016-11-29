@@ -1,19 +1,17 @@
 fileFormatVersion: 2
-guid: 9d5cc41001329d546aa831912adf8a05
-timeCreated: 1480308074
+guid: 5da6f8fc63448914f98e36d19ae07db0
+timeCreated: 1480421462
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: group_0
-    100002: //RootNode
-    100004: skp_camera_Last_Saved_SketchUp_View
-    400000: group_0
-    400002: //RootNode
-    400004: skp_camera_Last_Saved_SketchUp_View
-    2300000: group_0
-    3300000: group_0
-    4300000: group_0
+    100000: //RootNode
+    100002: skp_camera_Last_Saved_SketchUp_View
+    400000: //RootNode
+    400002: skp_camera_Last_Saved_SketchUp_View
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: SketchUp
     9500000: //RootNode
   materials:
     importMaterials: 1
