@@ -53,7 +53,7 @@ public class Back : MonoBehaviour {
 
 	private IEnumerator scaleAnimation(GameObject go, Vector3 startScale, Vector3 targetScale){
 		float elapsedTime = 0.0f;
-		while (elapsedTime < 1.0f)
+		while (elapsedTime <= 1.0f)
 		{
 			go.transform.localScale = Vector3.Slerp(startScale, targetScale, elapsedTime / 1.0f);
 			elapsedTime += Time.deltaTime;
