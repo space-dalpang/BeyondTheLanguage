@@ -3113,6 +3113,276 @@
       "category": "분노",
       "tag": "개/Noun|소리/Noun",
       "level": 2
+    },
+    {
+      "name": "힘들다",
+      "category": "슬픔",
+      "tag": "힘들다/Adjective",
+      "level": 1
+    },
+    {
+      "name": "피로하다",
+      "category": "슬픔",
+      "tag": "피로하다/Adjective",
+      "level": 1
+    },
+    {
+      "name": "피로",
+      "category": "슬픔",
+      "tag": "피로/Noun",
+      "level": 1
+    },
+    {
+      "name": "스트레스",
+      "category": "통증",
+      "tag": "스트레스/Noun",
+      "level": 1
+    },
+    {
+      "name": "평화",
+      "category": "중성",
+      "tag": "평화/Noun",
+      "level": 3
+    },
+    {
+      "name": "외치다",
+      "category": "분노",
+      "tag": "외치/Noun",
+      "level": 1
+    },
+    {
+      "name": "외치다",
+      "category": "분노",
+      "tag": "외치다/Verb",
+      "level": 1
+    },
+    {
+      "name": "불통",
+      "category": "분노",
+      "tag": "불통/Verb",
+      "level": 2
+    },
+    {
+      "name": "오만",
+      "category": "분노",
+      "tag": "오만/Verb",
+      "level": 1
+    },
+    {
+      "name": "경의",
+      "category": "공포",
+      "tag": "경의/Verb",
+      "level": 1
+    },
+    {
+      "name": "빨리",
+      "category": "분노",
+      "tag": "빨리/Adverb",
+      "level": 1
+    },
+    {
+      "name": "화나다",
+      "category": "분노",
+      "tag": "화나다/Verb",
+      "level": 3
+    },
+    {
+      "name": "화",
+      "category": "분노",
+      "tag": "화/Noun",
+      "level": 3
+    },
+    {
+      "name": "참사",
+      "category": "슬픔",
+      "tag": "참사/Noun",
+      "level": 3
+    },
+    {
+      "name": "참사",
+      "category": "슬픔",
+      "tag": "참사/Noun",
+      "level": 3
+    },
+    {
+      "name": "난리",
+      "category": "놀람",
+      "tag": "난리/Noun",
+      "level": 3
+    },
+    {
+      "name": "썅",
+      "category": "분노",
+      "tag": "썅/Noun",
+      "level": 3
+    },
+    {
+      "name": "거짓말",
+      "category": "혐오",
+      "tag": "거짓말/Noun",
+      "level": 2
+    },
+    {
+      "name": "개판",
+      "category": "혐오",
+      "tag": "개판/Noun",
+      "level": 2
+    },
+    {
+      "name": "개판",
+      "category": "혐오",
+      "tag": "개판/Noun",
+      "level": 2
+    },
+    {
+      "name": "확",
+      "category": "분노",
+      "tag": "확/Noun",
+      "level": 1
+    },
+    {
+      "name": "갈궈",
+      "category": "혐오",
+      "tag": "갈궈/Noun",
+      "level": 2
+    },
+    {
+      "name": "갈구다",
+      "category": "혐오",
+      "tag": "갈다/Verb",
+      "level": 2
+    },
+    {
+      "name": "!",
+      "category": "놀람",
+      "tag": "!/Punctuation",
+      "level": 1
+    },
+    {
+      "name": "그냥",
+      "category": "중성",
+      "tag": "그냥/Noun",
+      "level": 2
+    },
+    {
+      "name": "여유",
+      "category": "기쁨",
+      "tag": "여유/Noun",
+      "level": 1
+    },
+    {
+      "name": "멍때리다",
+      "category": "지루함",
+      "tag": "멍/Noun|때리다",
+      "level": 1
+    },
+    {
+      "name": "지치다",
+      "category": "지루함",
+      "tag": "지치다/Verb",
+      "level": 3
+    },
+    {
+      "name": "지치다",
+      "category": "지루함",
+      "tag": "지치다/Verb",
+      "level": 3
+    },
+    {
+      "name": "정신없다",
+      "category": "놀람",
+      "tag": "정신/Noun|없다/Adjective",
+      "level": 2
+    },
+    {
+      "name": "위로",
+      "category": "슬픔",
+      "tag": "위로/Noun",
+      "level": 1
+    },
+    {
+      "name": "다정하다",
+      "category": "기쁨",
+      "tag": "다정하다/Adjective",
+      "level": 1
+    },
+    {
+      "name": "고민",
+      "category": "통증",
+      "tag": "고민/Noun",
+      "level": 1
+    },
+    {
+      "name": "야근",
+      "category": "혐오",
+      "tag": "야근/Noun",
+      "level": 2
+    },
+    {
+      "name": "보람있다",
+      "category": "기쁨",
+      "tag": "보람/Noun|있다/Adjective",
+      "level": 2
+    },
+    {
+      "name": "보람찬",
+      "category": "기쁨",
+      "tag": "보람/Noun|찬/Noun",
+      "level": 2
+    },
+    {
+      "name": "어둠",
+      "category": "공포",
+      "tag": "어둠/Noun",
+      "level": 1
+    },
+    {
+      "name": "패기",
+      "category": "분노",
+      "tag": "패기/Noun",
+      "level": 1
+    },
+    {
+      "name": "험한",
+      "category": "통증",
+      "tag": "허다/Verb",
+      "level": 1
+    },
+    {
+      "name": "탄핵",
+      "category": "분노",
+      "tag": "탄핵/Noun",
+      "level": 3
+    },
+    {
+      "name": "탄핵",
+      "category": "분노",
+      "tag": "탄핵/Noun",
+      "level": 3
+    },
+    {
+      "name": "빛",
+      "category": "놀람",
+      "tag": "빛/Noun",
+      "level": 1
+    },
+    {
+      "name": "빛나다",
+      "category": "놀람",
+      "tag": "빛나다/Verb",
+      "level": 1
+    },
+    {
+      "name": "관심",
+      "category": "흥미",
+      "tag": "관심/Noun",
+      "level": 1
+    },
+    {
+      "name": "막막",
+      "category": "공포",
+      "tag": "막막/Noun",
+      "level": 1
     }
   ]
 }
