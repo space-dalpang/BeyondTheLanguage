@@ -45,6 +45,9 @@ public class Text : MonoBehaviour
 
 	public void ValueChangeCheck (InputField input)
 	{
+		if (input.text.Trim() == "")
+			return;
+		
 		api.GetSenti (input.text, OnGetSenti, OnErrorSenti);
 
 		GameObject.FindGameObjectWithTag ("introPolygon").GetComponent<Renderer>().enabled = false;
@@ -68,7 +71,9 @@ public class Text : MonoBehaviour
 		Transform target = new GameObject ("genDummy").transform;
 		target.position = go.transform.position + new Vector3(0, 8, 0);
 
-		Camera.main.GetComponent<MouseCamera> ().target = target;
+		MouseCamera mouseCamera = Camera.main.GetComponent<MouseCamera> ();
+		mouseCamera.target = target;
+		mouseCamera.targetFov = 40f;
 
 		UnityEngine.UI.Text txt = GameObject.Find ("ResultText").GetComponent<UnityEngine.UI.Text>();
 
@@ -77,6 +82,7 @@ public class Text : MonoBehaviour
 		Save (input.text, GameObject.FindGameObjectsWithTag ("temp"));
 
 		input.text = "";
+
 	}
 
 	Polygon CreateSphericalPolygon(int numVertices = 15, float radius = 1f) {
@@ -253,7 +259,7 @@ public class Text : MonoBehaviour
 		System.Random random = new System.Random (seed);
 
 		//go.transform.position = new Vector3 (random.Next (4) - 2, random.Next (3) + 5, random.Next (4) - 2);
-		go.transform.position = new Vector3(0, 8, 0) + Random.insideUnitSphere;
+		go.transform.position = new Vector3(0, 8, 0) + Random.insideUnitSphere * 2f;
 		go.transform.rotation = Random.rotation;
 
 		go.transform.localScale = new Vector3 (
@@ -335,7 +341,7 @@ public class Text : MonoBehaviour
 		if (words.list.Count == 0) {
 			Polygon polygon = CreateSphericalPolygon (mainInputField.text.GetHashCode () % 16 + 9, mainInputField.text.Length % 5 + 1);
 			RandomTransformGameObject (polygon.gameObject, Random.Range (1, 3), result.GetField ("text").str.GetHashCode());
-			polygon.gameObject.transform.position -= new Vector3 (0, 8, 0);
+			polygon.gameObject.transform.position -= new Vector3 (0, 8, -10);
 			polygon.gameObject.transform.SetParent(galleryObject.transform);
 		} else {
 			long unmatchedCount = result.GetField ("senti").GetField ("unmatched").i;
@@ -347,7 +353,7 @@ public class Text : MonoBehaviour
 				GameObject go = CreateSphericalPolygon (name.GetHashCode () % 16 + 9, name.Length % 2 + 1).gameObject;
 				go.GetComponent<MeshRenderer> ().material.color = Random.ColorHSV (0f, 1f, 1f, 1f, 0.5f, 1f);
 				RandomTransformGameObject (go, level, name.GetHashCode ());
-				go.transform.position -= new Vector3 (0, 8, 0);
+				go.transform.position -= new Vector3 (0, 8, -10);
 				go.transform.SetParent(galleryObject.transform);
 			}
 		}
@@ -358,7 +364,7 @@ public class Text : MonoBehaviour
 			int level = (int)word.GetField ("level").n;
 			GameObject go = GenSentiObject (name, category, level);
 			RandomTransformGameObject (go, level, name.GetHashCode ());
-			go.transform.position -= new Vector3 (0, 8, 0);
+			go.transform.position -= new Vector3 (0, 8, -10);
 			go.transform.SetParent(galleryObject.transform);
 		}
 
@@ -367,11 +373,13 @@ public class Text : MonoBehaviour
 		text.text = Util.FormatString(result.GetField ("text").str);
 		text.fontSize = 20;
 		textObject.transform.localPosition = new Vector3 (0, 0, 0);
-		textObject.transform.localScale = new Vector3 (0.01f, 0.01f, 0.01f);
+		textObject.transform.localScale = new Vector3 (0.015f, 0.015f, 0.015f);
 		textObject.transform.SetParent(galleryObject.transform);
+		textObject.GetComponent<RectTransform> ().sizeDelta = new Vector2 (160, 350);
+		textObject.GetComponent<UnityEngine.UI.Text> ().verticalOverflow = VerticalWrapMode.Truncate;
 
 		Util.ChangeLayerRecursively (galleryObject.transform, "UI");
-		galleryObject.transform.localScale = new Vector3 (50f, 50f, 50f);
+		galleryObject.transform.localScale = new Vector3 (30f, 30f, 30f);
 
 		int gridX = galleryObjects.Count % 2;
 		int gridY = Mathf.FloorToInt(galleryObjects.Count / 2f);
@@ -379,11 +387,9 @@ public class Text : MonoBehaviour
 		galleryObject.transform.localPosition = new Vector3 (gridX * 250 + 400, gridY * -250 - 465, 0);
 
 		BoxCollider2D collider = galleryObject.AddComponent<BoxCollider2D> ();
-		collider.size = new Vector2 (4, 4);
+		collider.size = new Vector2 (5, 5);
 		galleryObject.AddComponent<GalleryHit> ();
-
 		galleryObject.tag = "gallery";
-
 		galleryObjects.Add (galleryObject);
 
 		if(gridX == 0)

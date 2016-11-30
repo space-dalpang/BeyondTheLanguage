@@ -42,7 +42,10 @@ public class Back : MonoBehaviour {
 		}
 
 		GameObject go = GameObject.Find ("InputDummy");
-		Camera.main.GetComponent<MouseCamera> ().target = go.transform;
+
+		MouseCamera mouseCamera = Camera.main.GetComponent<MouseCamera> ();
+		mouseCamera.target = go.transform;
+		mouseCamera.targetFov = 60f;
 
 		input.Select ();
 		input.ActivateInputField ();

@@ -16,6 +16,8 @@ namespace BeyondTheLanguage
         private float x;
         private float y;
 
+		public float targetFov = 60f;
+
 		//private Transform prevTarget = null;
 
         private void Start()
@@ -25,7 +27,7 @@ namespace BeyondTheLanguage
             y = angles.x;
 						
 			//prevTarget = target;
-        }
+		}
 
         public void UpdateAngles()
         {
@@ -52,6 +54,12 @@ namespace BeyondTheLanguage
 			var position = rotation * new Vector3 (0.0f, 0.0f, -distance) + target.position;
 			transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 2 * Time.deltaTime);
 			transform.position = Vector3.Slerp(transform.position, position, 2 * Time.deltaTime);
+			Camera camera = Camera.main;
+
+			if (camera.fieldOfView > targetFov)
+				camera.fieldOfView -= 1f;
+			else if (camera.fieldOfView < targetFov)
+				camera.fieldOfView += 1f;
         }
 
         private static float ClampAngle(float angle, float min, float max)

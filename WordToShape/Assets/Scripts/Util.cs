@@ -52,7 +52,7 @@ public static class Util {
 		int len = 0;
 		for (int i = 0; i < text.Length; i++) {
 			sb.Append (text [i]);
-			if (len > 8 && text [i] == ' ') {
+			if (len > 20 && text [i] == ' ') {
 				sb.Append ('\n');
 				len = 0;
 			}
