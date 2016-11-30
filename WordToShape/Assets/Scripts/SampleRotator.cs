@@ -8,13 +8,11 @@ public class SampleRotator : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		samples = GameObject.FindGameObjectsWithTag ("sample");
+		//samples = GameObject.FindGameObjectsWithTag ("sample");
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		foreach (GameObject sample in samples) {
-			sample.transform.localEulerAngles += new Vector3(0, 1, 0);
-		}
+		transform.localEulerAngles += new Vector3(0, 1, 0);
 	}
 }
