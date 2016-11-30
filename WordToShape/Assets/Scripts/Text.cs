@@ -21,6 +21,7 @@ public class Text : MonoBehaviour
 	static public List<Vector3> samplesSize = new List<Vector3>();
 	private List<GameObject> galleryObjects = new List<GameObject>();
 	public Camera UICamera;
+	static public bool userInputLock = false;
 
 	void Start ()
 	{
@@ -48,16 +49,19 @@ public class Text : MonoBehaviour
 
 	public void ValueChangeCheck (InputField input)
 	{
+		if (userInputLock) {
+			return;
+		}
 		if (input.text.Trim() == "")
 			return;
 
-		api.GetSenti (input.text, OnGetSenti, OnErrorSenti);
+		api.GetSenti (input.text, onGetSentiForVCC, OnErrorSenti);
 
 		setSceneToResult (input.text);
 
 		Save (input.text, GameObject.FindGameObjectsWithTag ("temp"));
 
-		GenGalleryObject (input.text);
+//		genGalleryObject (input.text);
 
 		input.text = "";
 
@@ -71,6 +75,15 @@ public class Text : MonoBehaviour
 		}
 		return Factory.Create("RandomShape", vertices);
 
+	}
+
+	private void onGetSentiForVCC(JSONObject result) {
+		GameObject go = GenGalleryObject (result);
+		StartCoroutine(scaleAnimation(go, go.transform.localScale, Vector3.zero));
+	}
+
+	private void onGetSentiForLoadSaves(JSONObject result) {
+		GenGalleryObject (result);
 	}
 
 	private void OnGetSenti (JSONObject result)
@@ -87,6 +100,9 @@ public class Text : MonoBehaviour
 
 	void Update(){
 		if (Input.GetMouseButtonDown (0)) {
+			if (userInputLock){
+				return;
+			}
 			Ray ray = UICamera.ScreenPointToRay(Input.mousePosition);
 			RaycastHit2D hit = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity);
 			if (hit) {
@@ -97,7 +113,7 @@ public class Text : MonoBehaviour
 			}
 		} 
 	}
-
+		
 	private void setSceneToResult(string text){
 		GameObject.FindGameObjectWithTag ("introPolygon").GetComponent<Renderer>().enabled = false;
 
@@ -130,6 +146,7 @@ public class Text : MonoBehaviour
 	}
 
 	private IEnumerator scaleAnimation(GameObject go, Vector3 startScale, Vector3 targetScale){
+		userInputLock = true;
 		float elapsedTime = 0.0f;
 		while (elapsedTime <= 1.0f)
 		{
@@ -137,6 +154,8 @@ public class Text : MonoBehaviour
 			elapsedTime += Time.deltaTime;
 			yield return null;
 		}
+		go.transform.localScale = targetScale;
+		userInputLock = false;
 	}
 
 	private IEnumerator GenWordObject (JSONObject result)
@@ -329,7 +348,7 @@ public class Text : MonoBehaviour
 
 		foreach (FileInfo file in fileInfo) {
 			SentiData data = Load (file.Name);
-			api.GetSenti(data.text, GenGalleryObject, OnErrorSenti);
+			api.GetSenti(data.text, onGetSentiForLoadSaves, OnErrorSenti);
 		}
 	}
 
@@ -349,12 +368,12 @@ public class Text : MonoBehaviour
 		content.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 2600);
 	}
 
-	private void GenGalleryObject (string text){
-		api.GetSenti(text, GenGalleryObject, OnErrorSenti);
-	}
+//	private void GenGalleryObject (string text){
+//		api.GetSenti(text, GenGalleryObject, OnErrorSenti);
+//	}
 
 
-	private void GenGalleryObject (JSONObject result)
+	private GameObject GenGalleryObject (JSONObject result)
 	{
 		JSONObject words = result.GetField ("words");
 		GameObject galleryObject = new GameObject ("GalleryObject");
@@ -420,6 +439,8 @@ public class Text : MonoBehaviour
 			content.GetComponent<RectTransform> ().sizeDelta += new Vector2 (0, 250);
 
 		alignGallerys ();
+
+		return galleryObject;
 	}
 
 	private void alignGallerys(){

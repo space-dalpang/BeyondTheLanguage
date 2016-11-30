@@ -10,21 +10,29 @@ public static class Util {
 	public static IEnumerator FadeOut(CanvasGroup canvasGroup)
 	{
 		float time = 1f;
+		Text.userInputLock = true;
 		while(canvasGroup.alpha > 0)
 		{
 			canvasGroup.alpha -= Time.deltaTime / time;
 			yield return null;
 		}
+		canvasGroup.alpha = 0;
+		Text.userInputLock = false;
+		yield return null;
 	}
 
 	public static IEnumerator FadeIn(CanvasGroup canvasGroup)
 	{
 		float time = 1f;
+		Text.userInputLock = true;
 		while(canvasGroup.alpha < 1f)
 		{
 			canvasGroup.alpha += Time.deltaTime / time;
 			yield return null;
 		}
+		canvasGroup.alpha = 1f;
+		Text.userInputLock = false;
+		yield return null;
 	}
 
 

@@ -25,7 +25,7 @@ public class Api : MonoBehaviour
 
 			float timer = 0; 
 			bool failed = false;
-			float timeOut = 1;
+			float timeOut = 3;
 
 			while (!www.isDone) {
 				if (timer > timeOut) {
@@ -54,6 +54,8 @@ public class Api : MonoBehaviour
 			}
 			break;
 		}
-
+		if (retryCount >= 10) {
+			errorCb (url + ": timeout");
+		}
 	}
 }
