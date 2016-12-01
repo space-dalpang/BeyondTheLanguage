@@ -55,13 +55,13 @@ public class Text : MonoBehaviour
 		if (input.text.Trim() == "")
 			return;
 
-		api.GetSenti (input.text, onGetSentiForVCC, OnErrorSenti);
+		api.GetSenti (input.text, OnGetSentiForVCC, OnErrorSenti);
 
-		setSceneToResult (input.text);
+//		setSceneToResult (input.text);
 
-		Save (input.text, GameObject.FindGameObjectsWithTag ("temp"));
+//		Save (input.text, GameObject.FindGameObjectsWithTag ("temp"));
 
-//		genGalleryObject (input.text);
+//		GenGalleryObject (input.text);
 
 		input.text = "";
 
@@ -77,18 +77,19 @@ public class Text : MonoBehaviour
 
 	}
 
-	private void onGetSentiForVCC(JSONObject result) {
-		GameObject go = GenGalleryObject (result);
-		StartCoroutine(scaleAnimation(go, go.transform.localScale, Vector3.zero));
-	}
-
-	private void onGetSentiForLoadSaves(JSONObject result) {
-		GenGalleryObject (result);
-	}
-
 	private void OnGetSenti (JSONObject result)
 	{
 		StartCoroutine (GenWordObject (result));
+	}
+
+	private void OnGetSentiForVCC (JSONObject result)
+	{
+		string text = Regex.Unescape (result.GetField ("text").str);
+		StartCoroutine (GenWordObject (result));
+		GenGalleryObject (result);
+		setSceneToResult (text);
+		Save (text, GameObject.FindGameObjectsWithTag ("temp"));
+//		Regex.Unescape (result.GetField ("text").str);
 	}
 
 	private void OnErrorSenti (string error)
@@ -348,7 +349,7 @@ public class Text : MonoBehaviour
 
 		foreach (FileInfo file in fileInfo) {
 			SentiData data = Load (file.Name);
-			api.GetSenti(data.text, onGetSentiForLoadSaves, OnErrorSenti);
+			api.GetSenti(data.text, GenGalleryObject, OnErrorSenti);
 		}
 	}
 
@@ -368,12 +369,12 @@ public class Text : MonoBehaviour
 		content.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 2600);
 	}
 
-//	private void GenGalleryObject (string text){
-//		api.GetSenti(text, GenGalleryObject, OnErrorSenti);
-//	}
+	private void GenGalleryObject (string text){
+		api.GetSenti(text, GenGalleryObject, OnErrorSenti);
+	}
 
 
-	private GameObject GenGalleryObject (JSONObject result)
+	private void GenGalleryObject (JSONObject result)
 	{
 		JSONObject words = result.GetField ("words");
 		GameObject galleryObject = new GameObject ("GalleryObject");
@@ -439,8 +440,6 @@ public class Text : MonoBehaviour
 			content.GetComponent<RectTransform> ().sizeDelta += new Vector2 (0, 250);
 
 		alignGallerys ();
-
-		return galleryObject;
 	}
 
 	private void alignGallerys(){

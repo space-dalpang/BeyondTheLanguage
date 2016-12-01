@@ -16,7 +16,7 @@ public class Api : MonoBehaviour
 	private IEnumerator InternalGetSenti (string query, OnGetSenti cb, OnErrorSenti errorCb)
 	{
 		string host = "192.168.99.100";
-		//string host = "localhost";
+//		string host = "localhost";
 		string url = "http://" + host + "/senti?q=" + WWW.EscapeURL(query);
 
 		int retryCount = 0;
